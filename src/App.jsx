@@ -16,6 +16,7 @@ function App() {
   const [cartOpened, setCartOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+
   useEffect(() => {
     const fetchData = async () => {
       // TODO: Получаем список товаров из корзины
@@ -96,6 +97,7 @@ function App() {
     }
   };
 
+
   // TODO: Управляемый поиск
   const onChangeSearchInput = (event) => {
     setSearchValue(event.target.value);
@@ -120,6 +122,9 @@ function App() {
         totalAmount,
         setCartOpened,
         setCartItems,
+       
+        cartItems,
+       
       }}
     >
       <div className="wrapper clear">
