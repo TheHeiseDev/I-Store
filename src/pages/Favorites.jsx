@@ -12,7 +12,7 @@ const Favorites = ({ favorites, onAddToFavorite }) => {
           favorites.map((item) => (
             <Card
               key={item.id}
-              data={item}
+              {...item}
               favorited={true}
               //   onPlus={(obj) => onAddToCart(obj)}
               onFavorite={(obj) => onAddToFavorite(obj)}

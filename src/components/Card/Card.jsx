@@ -1,45 +1,71 @@
 import { useState } from "react";
 import styles from "./Card.module.scss";
+import ContentLoader from "react-content-loader";
 
-const Card = ({ data, onPlus, onFavorite, favorited = false }) => {
-  const [isAdded, setIsAdded] = useState(false);
+const Card = ({
+  id,
+  name,
+  imageUrl,
+  price,
+  onPlus,
+  onFavorite,
+  favorited = false,
+  added = false,
+  loading = false,
+}) => {
+  const [isAdded, setIsAdded] = useState(added);
   const [isFavorite, setIsFavorite] = useState(favorited);
-
+  const obj = { id, name, imageUrl, price };
   const onClickPlus = () => {
-    onPlus(data);
+    onPlus(obj);
     setIsAdded(!isAdded);
   };
 
   const onClickFavorite = () => {
     setIsFavorite((prev) => !prev);
-    onFavorite(data);
+    onFavorite(obj);
   };
-
-  function tabInt(num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  }
 
   return (
     <div className={styles.card}>
-      <div className={styles.favorive} onClick={onClickFavorite}>
-        <img src={isFavorite ? "/img/liked.svg" : "/img/unliked.svg"} />
-      </div>
+      {loading ? (
+        <ContentLoader
+          speed={2}
+          width={150}
+          height={255}
+          viewBox="0 0 150 265"
+          backgroundColor="#f3f3f3"
+          foregroundColor="#ecebeb"
+        >
+          <rect x="0" y="0" rx="10" ry="10" width="150" height="120" />
+          <rect x="0" y="143" rx="5" ry="5" width="150" height="15" />
+          <rect x="0" y="170" rx="5" ry="5" width="100" height="15" />
+          <rect x="0" y="210" rx="5" ry="5" width="80" height="25" />
+          <rect x="120" y="206" rx="10" ry="10" width="32" height="32" />
+        </ContentLoader>
+      ) : (
+        <>
+          <div className={styles.favorive} onClick={onClickFavorite}>
+            <img src={isFavorite ? "/img/liked.svg" : "/img/unliked.svg"} />
+          </div>
 
-      <img width={133} height={112} src={data.imageUrl} alt="1" />
-      <h5>{data.name}</h5>
-      <div className="d-flex justify-between align-center">
-        <div className="d-flex flex-column ">
-          <span>Цена:</span>
-          <b>{tabInt(data.price)} руб.</b>
-        </div>
+          <img width={133} height={112} src={imageUrl} alt="1" />
+          <h5>{name}</h5>
+          <div className="d-flex justify-between align-center">
+            <div className="d-flex flex-column ">
+              <span>Цена:</span>
+              <b>{price} руб.</b>
+            </div>
 
-        <img
-          className={styles.plus}
-          onClick={onClickPlus}
-          src={isAdded ? "/img/btn-checked.svg" : "/img/btn-plus.svg"}
-          alt="Plus"
-        />
-      </div>
+            <img
+              className={styles.plus}
+              onClick={onClickPlus}
+              src={isAdded ? "/img/btn-checked.svg" : "/img/btn-plus.svg"}
+              alt="Plus"
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };
