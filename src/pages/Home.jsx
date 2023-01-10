@@ -7,7 +7,7 @@ const Home = ({
   onChangeSearchInput,
   onAddToFavorite,
   onAddToCart,
-  cartItems,
+
   isLoading,
 }) => {
   const renderItems = () => {
@@ -16,17 +16,16 @@ const Home = ({
     );
     return (isLoading ? [...Array(12)] : filteredItems).map((item, index) => (
       <Card
-        key={index}
+        key={item ? item.id : index}
         onFavorite={(obj) => onAddToFavorite(obj)}
         onPlus={(obj) => onAddToCart(obj)}
-        added={cartItems.some(
-          (cartObj) => Number(cartObj.id) === Number(item.id)
-        )}
+        // added={isItemAdded(item && item.id)}
         loading={isLoading}
         {...item}
       />
     ));
   };
+
   return (
     <div className="content  p-40 ">
       <div className="d-flex justify-between align-center mb-40">

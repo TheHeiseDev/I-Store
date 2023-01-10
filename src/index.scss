@@ -248,3 +248,23 @@ header {
     opacity: 1;
   }
 }
+.favoriteLink {
+  position: relative;
+
+  & span {
+    position: absolute;
+    top: -14px;
+    right: 5px;
+
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: rgb(251, 62, 28);
+    width: 18px;
+    height: 17px;
+    border-radius: 50%;
+    font-size: 12px;
+  }
+}

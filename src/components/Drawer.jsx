@@ -1,4 +1,14 @@
+import { useContext, useState } from "react";
+import AppContext from "../context";
+import Info from "./Info";
+
 const Drawer = ({ onClose, items = [], omRemoveItem }) => {
+  const { setCartItems } = useContext(AppContext);
+  const [isOrderComplete, setIsOrderComplete] = useState(false);
+  const onClickOrder = () => {
+    setIsOrderComplete(true);
+    setCartItems([]);
+  };
   const totalPrice = items.reduce((acc, item) => acc + item.price, 0);
   const tax = totalPrice * 0.05;
 
@@ -13,7 +23,7 @@ const Drawer = ({ onClose, items = [], omRemoveItem }) => {
         </h2>
 
         {items.length > 0 ? (
-          <div>
+          <div className="d-flex flex-column flex">
             <div className="items">
               {items.map((obj) => (
                 <div
@@ -54,26 +64,25 @@ const Drawer = ({ onClose, items = [], omRemoveItem }) => {
                   <b>{tax.toFixed(2)} руб.</b>
                 </li>
               </ul>
-              <button className="greenBtn">
+              <button onClick={onClickOrder} className="greenBtn">
                 Оформить заказ <img src="/img/arrow.svg" alt="arrow" />
               </button>
             </div>
           </div>
         ) : (
-          <div className="cartEmpty d-flex align-center justify-center flex-column flex">
-            <img
-              className="mb-20"
-              width="120px"
-              src="/img/empty-cart.jpg"
-              alt="Empty"
-            />
-            <h2>Корзина пуста</h2>
-            <p className="opacity-6">Добавьте товар в корзину</p>
-            <button onClick={onClose} className="greenBtn">
-              <img src="img/arrow.svg" alt="Arrow" />
-              Вернуться назад
-            </button>
-          </div>
+          <Info
+            title={isOrderComplete ? "Заказ оформлен!" : "Корзина пуста"}
+            description={
+              isOrderComplete
+                ? "Ваш заказ №00100242 успешно оформлен!"
+                : "Добавьте товар в корзину"
+            }
+            image={
+              isOrderComplete
+                ? "/img/complete-order.jpg"
+                : "/img/empty-cart.jpg"
+            }
+          />
         )}
       </div>
     </div>
