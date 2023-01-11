@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/I-Store/static/css/main.ff40b5df.css",
+    "main.js": "/I-Store/static/js/main.8d762373.js",
+    "index.html": "/I-Store/index.html",
+    "main.ff40b5df.css.map": "/I-Store/static/css/main.ff40b5df.css.map",
+    "main.8d762373.js.map": "/I-Store/static/js/main.8d762373.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ff40b5df.css",
+    "static/js/main.8d762373.js"
+  ]
+}
