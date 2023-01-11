@@ -19,7 +19,6 @@ const Home = ({
         key={item ? item.id : index}
         onFavorite={(obj) => onAddToFavorite(obj)}
         onPlus={(obj) => onAddToCart(obj)}
-        // added={isItemAdded(item && item.id)}
         loading={isLoading}
         {...item}
       />

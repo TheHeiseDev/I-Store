@@ -1,17 +1,19 @@
 import axios from "axios";
-import { useContext, useState } from "react";
-import AppContext from "../context";
-import Info from "./Info";
+
+import { useState } from "react";
+import { useCart } from "../../hooks/useCart";
+
+import Info from "../Info";
+import styles from "./Drawer.module.scss";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const Drawer = ({ onClose, items = [], omRemoveItem }) => {
-  const { setCartItems, cartItems } = useContext(AppContext);
+const Drawer = ({ onClose, items = [], omRemoveItem, opened }) => {
+  const { cartItems, setCartItems, totalPrice } = useCart();
   const [isOrderComplete, setIsOrderComplete] = useState(false);
   const [orderId, setIsOrderId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const totalPrice = items.reduce((acc, item) => acc + item.price, 0);
   const tax = totalPrice * 0.05;
 
   const onClickOrder = async () => {
@@ -32,6 +34,7 @@ const Drawer = ({ onClose, items = [], omRemoveItem }) => {
         await axios.delete(
           "https://63ba780e56043ab3c79c0471.mockapi.io/cart/" + item.id
         );
+
         //  Задержка тут нужна для того, чтоб запросы не отправлялись мгновенно
         //  и mockapi не блокировал наши запросы
         await delay(1000);
@@ -43,18 +46,26 @@ const Drawer = ({ onClose, items = [], omRemoveItem }) => {
   };
 
   return (
-    <div className="drawerOverlay">
-      <div className="drawer">
+    <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ""}`}>
+      <div className={styles.drawer}>
         <h2 className="d-flex justify-between mb-30">
           Корзина
-          <button onClick={onClose} className="drawerBtn">
+          <button
+            onClick={() => {
+              console.log("click");
+
+              onClose();
+              setIsOrderComplete(false);
+            }}
+            className={styles.drawerBtn}
+          >
             x
           </button>
         </h2>
 
         {items.length > 0 ? (
           <div className="d-flex flex-column flex">
-            <div className="items">
+            <div className="items flex">
               {items.map((obj) => (
                 <div
                   key={obj.id}
@@ -68,7 +79,7 @@ const Drawer = ({ onClose, items = [], omRemoveItem }) => {
                     <p className="mb-5">{obj.name}</p>
                     <b>{obj.price} руб.</b>
                   </div>
-                  {/* <img src="/img/btn-remove.svg" alt="remove" /> */}
+
                   <button
                     onClick={() => {
                       omRemoveItem(obj.id);
@@ -86,7 +97,7 @@ const Drawer = ({ onClose, items = [], omRemoveItem }) => {
                 <li>
                   <span>Итого:</span>
                   <div></div>
-                  <b>{totalPrice.toFixed(2)} руб.</b>
+                  <b>{totalPrice} руб.</b>
                 </li>
                 <li>
                   <span>Налог 5%</span>
@@ -116,6 +127,7 @@ const Drawer = ({ onClose, items = [], omRemoveItem }) => {
                 ? "/img/complete-order.jpg"
                 : "/img/empty-cart.jpg"
             }
+            setIsOrderComplete={setIsOrderComplete}
           />
         )}
       </div>
